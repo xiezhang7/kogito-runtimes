@@ -16,8 +16,6 @@
 
 package org.kie.kogito.events.mongodb;
 
-import java.util.Optional;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,16 +35,16 @@ public class QuarkusMongoDBEventPublisher extends MongoDBEventPublisher {
     MongoDBTransactionManager transactionManager;
 
     @Inject
-    @ConfigProperty(name = "kogito.events.processinstances.enabled")
-    Optional<Boolean> processInstancesEvents;
+    @ConfigProperty(name = "kogito.events.processinstances.enabled", defaultValue = "true")
+    boolean processInstancesEvents;
 
     @Inject
-    @ConfigProperty(name = "kogito.events.usertasks.enabled")
-    Optional<Boolean> userTasksEvents;
+    @ConfigProperty(name = "kogito.events.usertasks.enabled", defaultValue = "true")
+    boolean userTasksEvents;
 
     @Inject
-    @ConfigProperty(name = "kogito.events.variables.enabled")
-    Optional<Boolean> variablesEvents;
+    @ConfigProperty(name = "kogito.events.variables.enabled", defaultValue = "true")
+    boolean variablesEvents;
 
     @Inject
     @ConfigProperty(name = "kogito.events.database", defaultValue = "kogito-events")
@@ -81,17 +79,17 @@ public class QuarkusMongoDBEventPublisher extends MongoDBEventPublisher {
 
     @Override
     protected boolean processInstancesEvents() {
-        return this.processInstancesEvents.orElse(true);
+        return this.processInstancesEvents;
     }
 
     @Override
     protected boolean userTasksEvents() {
-        return this.userTasksEvents.orElse(true);
+        return this.userTasksEvents;
     }
 
     @Override
     protected boolean variablesEvents() {
-        return this.variablesEvents.orElse(true);
+        return this.variablesEvents;
     }
 
     @Override

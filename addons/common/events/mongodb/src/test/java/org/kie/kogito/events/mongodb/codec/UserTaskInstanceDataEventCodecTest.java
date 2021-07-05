@@ -51,7 +51,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class UserTaskInstanceDataEventCodecTest {
 
@@ -64,83 +63,50 @@ class UserTaskInstanceDataEventCodecTest {
         codec = new UserTaskInstanceDataEventCodec();
 
         String source = "testSource";
-        String kogitoProcessinstanceId = "testKogitoProcessinstanceId";
-        String kogitoRootProcessinstanceId = "testKogitoRootProcessinstanceId";
-        String kogitoProcessId = "testKogitoProcessId";
-        String kogitoRootProcessId = "testKogitoRootProcessId";
         String kogitoAddons = "testKogitoAddons";
-        String kogitoUserTaskinstanceId = "testKogitoUserTaskinstanceId";
-        String kogitoUserTaskinstanceState = "testKogitoUserTaskinstanceState";
-        String id = "testId";
-        String taskName = "testTaskName";
-        String taskDescription = "testTaskDescription";
-        String taskPriority = "testTaskPriority";
-        String referenceName = "testReferenceName";
-        Date startDate = new Date();
-        Date completeDate = new Date();
-        String state = "testState";
-        String actualOwner = "testActualOwner";
-        Set<String> potentialUsers = Collections.singleton("testPotentialUsers");
-        Set<String> potentialGroups = Collections.singleton("testPotentialGroups");
-        Set<String> excludedUsers = Collections.singleton("testExcludedUsers");
-        Set<String> adminUsers = Collections.singleton("testAdminUsers");
-        Set<String> adminGroups = Collections.singleton("testAdminGroups");
-        Map<String, Object> inputs = Collections.singletonMap("testInputsKey", "testInputsValue");
-        Map<String, Object> outputs = Collections.singletonMap("testOutputsKey", "testOutputsValue");
-        Comment comment = mock(Comment.class);
-        String commentId = "testCommentId";
-        String commentContent = "testCommentContent";
-        String commentUpdatedBy = "testCommentUpdatedBy";
-        Date commentUpdatedAt = new Date();
-        when(comment.getId()).thenReturn(commentId);
-        when(comment.getContent()).thenReturn(commentContent);
-        when(comment.getUpdatedBy()).thenReturn(commentUpdatedBy);
-        when(comment.getUpdatedAt()).thenReturn(commentUpdatedAt);
+
+        Comment comment = new Comment("testCommentId", "testCommentUpdatedBy");
+        comment.setContent("testCommentContent");
+        comment.setUpdatedAt(new Date());
         Set<Comment> comments = Collections.singleton(comment);
-        Attachment attachment = mock(Attachment.class);
-        String attachmentId = "testAttachmentId";
-        URI attachmentContent = URI.create("test.attachment.test");
-        String attachmentUpdatedBy = "testAttachmentUpdatedBy";
-        Date attachmentUpdatedAt = new Date();
-        String attachmentName = "testAttachmentName";
-        when(attachment.getId()).thenReturn(attachmentId);
-        when(attachment.getContent()).thenReturn(attachmentContent);
-        when(attachment.getUpdatedBy()).thenReturn(attachmentUpdatedBy);
-        when(attachment.getUpdatedAt()).thenReturn(attachmentUpdatedAt);
-        when(attachment.getName()).thenReturn(attachmentName);
+        Attachment attachment = new Attachment("testAttachmentId", "testAttachmentUpdatedBy");
+        attachment.setContent(URI.create("test.attachment.test"));
+        attachment.setName("testAttachmentName");
+        attachment.setUpdatedAt(new Date());
         Set<Attachment> attachments = Collections.singleton(attachment);
 
         Map<String, String> metaData = new HashMap<>();
-        metaData.put(ProcessInstanceEventBody.ID_META_DATA, kogitoProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, kogitoRootProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, kogitoProcessId);
-        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, kogitoRootProcessId);
-        metaData.put(UserTaskInstanceEventBody.UT_STATE_META_DATA, kogitoUserTaskinstanceState);
-        metaData.put(UserTaskInstanceEventBody.UT_ID_META_DATA, kogitoUserTaskinstanceId);
+        metaData.put(ProcessInstanceEventBody.ID_META_DATA, "testKogitoProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, "testKogitoRootProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, "testKogitoProcessId");
+        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, "testKogitoRootProcessId");
+        metaData.put(UserTaskInstanceEventBody.UT_STATE_META_DATA, "testKogitoUserTaskinstanceState");
+        metaData.put(UserTaskInstanceEventBody.UT_ID_META_DATA, "testKogitoUserTaskinstanceId");
 
-        UserTaskInstanceEventBody body = mock(UserTaskInstanceEventBody.class);
-        when(body.getId()).thenReturn(id);
-        when(body.getTaskName()).thenReturn(taskName);
-        when(body.getTaskDescription()).thenReturn(taskDescription);
-        when(body.getTaskPriority()).thenReturn(taskPriority);
-        when(body.getReferenceName()).thenReturn(referenceName);
-        when(body.getStartDate()).thenReturn(startDate);
-        when(body.getCompleteDate()).thenReturn(completeDate);
-        when(body.getState()).thenReturn(state);
-        when(body.getActualOwner()).thenReturn(actualOwner);
-        when(body.getPotentialUsers()).thenReturn(potentialUsers);
-        when(body.getPotentialGroups()).thenReturn(potentialGroups);
-        when(body.getExcludedUsers()).thenReturn(excludedUsers);
-        when(body.getAdminUsers()).thenReturn(adminUsers);
-        when(body.getAdminGroups()).thenReturn(adminGroups);
-        when(body.getInputs()).thenReturn(inputs);
-        when(body.getOutputs()).thenReturn(outputs);
-        when(body.getProcessInstanceId()).thenReturn(kogitoProcessinstanceId);
-        when(body.getRootProcessInstanceId()).thenReturn(kogitoRootProcessinstanceId);
-        when(body.getProcessId()).thenReturn(kogitoProcessId);
-        when(body.getRootProcessId()).thenReturn(kogitoRootProcessId);
-        when(body.getComments()).thenReturn(comments);
-        when(body.getAttachments()).thenReturn(attachments);
+        UserTaskInstanceEventBody body = UserTaskInstanceEventBody.create()
+                .id("testId")
+                .taskName("testTaskName")
+                .taskDescription("testTaskDescription")
+                .taskPriority("testTaskPriority")
+                .referenceName("testReferenceName")
+                .startDate(new Date())
+                .completeDate(new Date())
+                .state("testState")
+                .actualOwner("testActualOwner")
+                .potentialUsers(Collections.singleton("testPotentialUsers"))
+                .potentialGroups(Collections.singleton("testPotentialGroups"))
+                .excludedUsers(Collections.singleton("testExcludedUsers"))
+                .adminUsers(Collections.singleton("testAdminUsers"))
+                .adminGroups(Collections.singleton("testAdminGroups"))
+                .inputs(Collections.singletonMap("testInputsKey", "testInputsValue"))
+                .outputs(Collections.singletonMap("testOutputsKey", "testOutputsValue"))
+                .processInstanceId("testKogitoProcessinstanceId")
+                .rootProcessInstanceId("testKogitoRootProcessinstanceId")
+                .processId("testKogitoProcessId")
+                .rootProcessId("testKogitoRootProcessId")
+                .comments(comments)
+                .attachments(attachments)
+                .build();
 
         event = new UserTaskInstanceDataEvent(source, kogitoAddons, metaData, body);
     }
@@ -235,6 +201,6 @@ class UserTaskInstanceDataEventCodecTest {
 
     @Test
     void getEncoderClass() {
-        assertTrue(codec.getEncoderClass().isAssignableFrom(UserTaskInstanceDataEvent.class));
+        assertEquals(UserTaskInstanceDataEvent.class, codec.getEncoderClass());
     }
 }

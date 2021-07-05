@@ -25,21 +25,21 @@ import org.kie.kogito.services.event.VariableInstanceDataEvent;
 
 public class EventMongoDBCodecProvider implements CodecProvider {
 
-    private final ProcessInstanceDataEventCodec processInstanceDataEventCodec = new ProcessInstanceDataEventCodec();
-    private final UserTaskInstanceDataEventCodec userTaskInstanceDataEventCodec = new UserTaskInstanceDataEventCodec();
-    private final VariableInstanceDataEventCodec variableInstanceDataEventCodec = new VariableInstanceDataEventCodec();
+    private static final ProcessInstanceDataEventCodec PROCESS_INSTANCE_DATA_EVENT_CODEC = new ProcessInstanceDataEventCodec();
+    private static final UserTaskInstanceDataEventCodec USER_TASK_INSTANCE_DATA_EVENT_CODEC = new UserTaskInstanceDataEventCodec();
+    private static final VariableInstanceDataEventCodec VARIABLE_INSTANCE_DATA_EVENT_CODEC = new VariableInstanceDataEventCodec();
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> Codec<T> get(Class<T> aClass, CodecRegistry codecRegistry) {
         if (aClass == ProcessInstanceDataEvent.class) {
-            return (Codec<T>) processInstanceDataEventCodec;
+            return (Codec<T>) PROCESS_INSTANCE_DATA_EVENT_CODEC;
         }
         if (aClass == UserTaskInstanceDataEvent.class) {
-            return (Codec<T>) userTaskInstanceDataEventCodec;
+            return (Codec<T>) USER_TASK_INSTANCE_DATA_EVENT_CODEC;
         }
         if (aClass == VariableInstanceDataEvent.class) {
-            return (Codec<T>) variableInstanceDataEventCodec;
+            return (Codec<T>) VARIABLE_INSTANCE_DATA_EVENT_CODEC;
         }
         return null;
     }

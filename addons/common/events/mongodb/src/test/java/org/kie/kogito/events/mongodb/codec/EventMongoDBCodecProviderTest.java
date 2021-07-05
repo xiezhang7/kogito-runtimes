@@ -21,8 +21,8 @@ import org.kie.kogito.services.event.ProcessInstanceDataEvent;
 import org.kie.kogito.services.event.UserTaskInstanceDataEvent;
 import org.kie.kogito.services.event.VariableInstanceDataEvent;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EventMongoDBCodecProviderTest {
 
@@ -30,9 +30,9 @@ class EventMongoDBCodecProviderTest {
     void get() {
         EventMongoDBCodecProvider provider = new EventMongoDBCodecProvider();
 
-        assertTrue(provider.get(ProcessInstanceDataEvent.class, null).getClass().isAssignableFrom(ProcessInstanceDataEventCodec.class));
-        assertTrue(provider.get(UserTaskInstanceDataEvent.class, null).getClass().isAssignableFrom(UserTaskInstanceDataEventCodec.class));
-        assertTrue(provider.get(VariableInstanceDataEvent.class, null).getClass().isAssignableFrom(VariableInstanceDataEventCodec.class));
+        assertEquals(ProcessInstanceDataEventCodec.class, provider.get(ProcessInstanceDataEvent.class, null).getClass());
+        assertEquals(UserTaskInstanceDataEventCodec.class, provider.get(UserTaskInstanceDataEvent.class, null).getClass());
+        assertEquals(VariableInstanceDataEventCodec.class, provider.get(VariableInstanceDataEvent.class, null).getClass());
         assertNull(provider.get(String.class, null));
     }
 }

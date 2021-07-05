@@ -45,7 +45,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class VariableInstanceDataEventCodecTest {
 
@@ -58,39 +57,28 @@ class VariableInstanceDataEventCodecTest {
         codec = new VariableInstanceDataEventCodec();
 
         String source = "testSource";
-        String kogitoProcessinstanceId = "testKogitoProcessinstanceId";
-        String kogitoRootProcessinstanceId = "testKogitoRootProcessinstanceId";
-        String kogitoProcessId = "testKogitoProcessId";
-        String kogitoRootProcessId = "testKogitoRootProcessId";
         String kogitoAddons = "testKogitoAddons";
-        Date changeDate = new Date();
-        String changedByNodeId = "testChangedByNodeId";
-        String changedByNodeName = "testChangedByNodeName";
-        String changedByNodeType = "testChangedByNodeType";
-        String changedByUser = "testChangedByUser";
-        String variableName = "testVariableName";
-        String variablePreviousValue = "testVariablePreviousValue";
-        String variableValue = "testVariableValue";
 
         Map<String, String> metaData = new HashMap<>();
-        metaData.put(ProcessInstanceEventBody.ID_META_DATA, kogitoProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, kogitoRootProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, kogitoProcessId);
-        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, kogitoRootProcessId);
+        metaData.put(ProcessInstanceEventBody.ID_META_DATA, "testKogitoProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, "testKogitoRootProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, "testKogitoProcessId");
+        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, "testKogitoRootProcessId");
 
-        VariableInstanceEventBody body = mock(VariableInstanceEventBody.class);
-        when(body.getChangeDate()).thenReturn(changeDate);
-        when(body.getChangedByNodeId()).thenReturn(changedByNodeId);
-        when(body.getChangedByNodeName()).thenReturn(changedByNodeName);
-        when(body.getChangedByNodeType()).thenReturn(changedByNodeType);
-        when(body.getChangedByUser()).thenReturn(changedByUser);
-        when(body.getProcessId()).thenReturn(kogitoProcessId);
-        when(body.getProcessInstanceId()).thenReturn(kogitoProcessinstanceId);
-        when(body.getRootProcessId()).thenReturn(kogitoRootProcessId);
-        when(body.getRootProcessInstanceId()).thenReturn(kogitoRootProcessinstanceId);
-        when(body.getVariableName()).thenReturn(variableName);
-        when(body.getVariablePreviousValue()).thenReturn(variablePreviousValue);
-        when(body.getVariableValue()).thenReturn(variableValue);
+        VariableInstanceEventBody body = VariableInstanceEventBody.create()
+                .changeDate(new Date())
+                .changedByNodeId("testChangedByNodeId")
+                .changedByNodeName("testChangedByNodeName")
+                .changedByNodeType("testChangedByNodeType")
+                .changedByUser("testChangedByUser")
+                .processId("testKogitoProcessId")
+                .processInstanceId("testKogitoProcessinstanceId")
+                .rootProcessId("testKogitoRootProcessId")
+                .rootProcessInstanceId("testKogitoRootProcessinstanceId")
+                .variableName("testVariableName")
+                .variablePreviousValue("testVariablePreviousValue")
+                .variableValue("testVariableValue")
+                .build();
 
         event = new VariableInstanceDataEvent(source, kogitoAddons, metaData, body);
     }
@@ -162,6 +150,6 @@ class VariableInstanceDataEventCodecTest {
 
     @Test
     void getEncoderClass() {
-        assertTrue(codec.getEncoderClass().isAssignableFrom(VariableInstanceDataEvent.class));
+        assertEquals(VariableInstanceDataEvent.class, codec.getEncoderClass());
     }
 }

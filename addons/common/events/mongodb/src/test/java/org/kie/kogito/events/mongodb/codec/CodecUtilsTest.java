@@ -27,7 +27,6 @@ import org.kie.kogito.services.event.impl.ProcessInstanceEventBody;
 import org.kie.kogito.services.event.impl.VariableInstanceEventBody;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.kie.kogito.events.mongodb.codec.CodecUtils.ID;
 import static org.mockito.Mockito.mock;
 
@@ -70,6 +69,6 @@ class CodecUtilsTest {
 
     @Test
     void codec() {
-        assertTrue(CodecUtils.codec().getClass().isAssignableFrom(DocumentCodec.class));
+        assertEquals(DocumentCodec.class, CodecUtils.codec().getClass());
     }
 }

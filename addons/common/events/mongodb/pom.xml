@@ -12,7 +12,7 @@
 
     <artifactId>kogito-addons-events-mongodb</artifactId>
     <name>Kogito :: Add-Ons :: Events :: MongoDB</name>
-    <description>Common for Kogito Events based on MongoDB</description>
+    <description>Common addon for Kogito Events based on MongoDB</description>
 
     <dependencies>
         <dependency>

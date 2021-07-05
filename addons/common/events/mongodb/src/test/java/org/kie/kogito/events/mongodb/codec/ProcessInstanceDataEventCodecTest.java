@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,7 +50,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class ProcessInstanceDataEventCodecTest {
 
@@ -64,73 +62,49 @@ class ProcessInstanceDataEventCodecTest {
         codec = new ProcessInstanceDataEventCodec();
 
         String source = "testSource";
-        String kogitoProcessinstanceId = "testKogitoProcessinstanceId";
-        String kogitoRootProcessinstanceId = "testKogitoRootProcessinstanceId";
-        String kogitoProcessId = "testKogitoProcessId";
-        String kogitoRootProcessId = "testKogitoRootProcessId";
         String kogitoAddons = "testKogitoAddons";
-        String kogitoParentProcessinstanceId = "testKogitoParentProcessinstanceId";
-        String kogitoProcessinstanceState = "testKogitoProcessinstanceState";
-
-        String id = "testId";
-        String processName = "testProcessName";
-        Date startDate = new Date();
-        Date endDate = new Date();
-        Integer state = 1;
-        String businessKey = "testBusinessKey";
-        NodeInstanceEventBody nodeInstanceEventBody = mock(NodeInstanceEventBody.class);
-        String nodeId = "testNodeId";
-        String nodeDefinitionId = "testNodeDefinitionId";
-        String nodeName = "testNodeName";
-        String nodeType = "testNodeType";
-        Date triggerTime = new Date();
-        Date leaveTime = new Date();
-        when(nodeInstanceEventBody.getId()).thenReturn(id);
-        when(nodeInstanceEventBody.getNodeId()).thenReturn(nodeId);
-        when(nodeInstanceEventBody.getNodeDefinitionId()).thenReturn(nodeDefinitionId);
-        when(nodeInstanceEventBody.getNodeName()).thenReturn(nodeName);
-        when(nodeInstanceEventBody.getNodeType()).thenReturn(nodeType);
-        when(nodeInstanceEventBody.getTriggerTime()).thenReturn(triggerTime);
-        when(nodeInstanceEventBody.getLeaveTime()).thenReturn(leaveTime);
-        Set<NodeInstanceEventBody> nodeInstances = Collections.singleton(nodeInstanceEventBody);
-        Map<String, Object> variables = Collections.singletonMap("testVariableKey", "testVariableValue");
-        String errorMessage = "testErrorMessage";
-        ProcessErrorEventBody error = mock(ProcessErrorEventBody.class);
-        when(error.getErrorMessage()).thenReturn(errorMessage);
-        when(error.getNodeDefinitionId()).thenReturn(nodeDefinitionId);
-        List<String> roles = Collections.singletonList("testRole");
-        MilestoneEventBody milestoneEventBody = mock(MilestoneEventBody.class);
-        String name = "testName";
-        String status = "testStatus";
-        when(milestoneEventBody.getId()).thenReturn(id);
-        when(milestoneEventBody.getName()).thenReturn(name);
-        when(milestoneEventBody.getStatus()).thenReturn(status);
-        Set<MilestoneEventBody> milestones = Collections.singleton(milestoneEventBody);
 
         Map<String, String> metaData = new HashMap<>();
-        metaData.put(ProcessInstanceEventBody.ID_META_DATA, kogitoProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, kogitoRootProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, kogitoProcessId);
-        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, kogitoRootProcessId);
-        metaData.put(ProcessInstanceEventBody.PARENT_ID_META_DATA, kogitoParentProcessinstanceId);
-        metaData.put(ProcessInstanceEventBody.STATE_META_DATA, kogitoProcessinstanceState);
+        metaData.put(ProcessInstanceEventBody.ID_META_DATA, "testKogitoProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.ROOT_ID_META_DATA, "testKogitoRootProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.PROCESS_ID_META_DATA, "testKogitoProcessId");
+        metaData.put(ProcessInstanceEventBody.ROOT_PROCESS_ID_META_DATA, "testKogitoRootProcessId");
+        metaData.put(ProcessInstanceEventBody.PARENT_ID_META_DATA, "testKogitoParentProcessinstanceId");
+        metaData.put(ProcessInstanceEventBody.STATE_META_DATA, "testKogitoProcessinstanceState");
 
-        ProcessInstanceEventBody body = mock(ProcessInstanceEventBody.class);
-        when(body.getId()).thenReturn(id);
-        when(body.getParentInstanceId()).thenReturn(kogitoParentProcessinstanceId);
-        when(body.getRootInstanceId()).thenReturn(kogitoRootProcessinstanceId);
-        when(body.getProcessId()).thenReturn(kogitoProcessId);
-        when(body.getRootProcessId()).thenReturn(kogitoRootProcessId);
-        when(body.getProcessName()).thenReturn(processName);
-        when(body.getStartDate()).thenReturn(startDate);
-        when(body.getEndDate()).thenReturn(endDate);
-        when(body.getState()).thenReturn(state);
-        when(body.getBusinessKey()).thenReturn(businessKey);
-        when(body.getError()).thenReturn(error);
-        when(body.getNodeInstances()).thenReturn(nodeInstances);
-        when(body.getVariables()).thenReturn(variables);
-        when(body.getRoles()).thenReturn(roles);
-        when(body.getMilestones()).thenReturn(milestones);
+        ProcessInstanceEventBody body = ProcessInstanceEventBody.create()
+                .id("testId")
+                .parentInstanceId("testKogitoParentProcessinstanceId")
+                .rootInstanceId("testKogitoRootProcessinstanceId")
+                .processId("testKogitoProcessId")
+                .rootProcessId("testKogitoRootProcessId")
+                .processName("testProcessName")
+                .startDate(new Date())
+                .endDate(new Date())
+                .state(1)
+                .businessKey("testBusinessKey")
+                .error(ProcessErrorEventBody.create()
+                        .errorMessage("testErrorMessage")
+                        .nodeDefinitionId("testNodeDefinitionId")
+                        .build())
+                .nodeInstance(NodeInstanceEventBody.create()
+                        .id("testId")
+                        .nodeId("testNodeId")
+                        .nodeDefinitionId("testNodeDefinitionId")
+                        .nodeName("testNodeName")
+                        .nodeType("testNodeType")
+                        .triggerTime(new Date())
+                        .leaveTime(new Date())
+                        .build())
+                .variables(Collections.singletonMap("testVariableKey", "testVariableValue"))
+                .roles("testRole")
+                .milestones(Collections.singleton(
+                        MilestoneEventBody.create()
+                                .id("testId")
+                                .name("testName")
+                                .status("testStatus")
+                                .build()))
+                .build();
 
         event = new ProcessInstanceDataEvent(source, kogitoAddons, metaData, body);
     }
@@ -221,6 +195,6 @@ class ProcessInstanceDataEventCodecTest {
 
     @Test
     void getEncoderClass() {
-        assertTrue(codec.getEncoderClass().isAssignableFrom(ProcessInstanceDataEvent.class));
+        assertEquals(ProcessInstanceDataEvent.class, codec.getEncoderClass());
     }
 }
